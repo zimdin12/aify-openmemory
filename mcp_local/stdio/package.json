@@ -1,7 +1,7 @@
 {
-  "name": "agentify-mcp-stdio",
+  "name": "aify-mcp-stdio",
   "version": "0.1.0",
-  "description": "Host-side MCP server (stdio transport) for agentify container service",
+  "description": "Host-side MCP server (stdio transport) for aify container service",
   "main": "server.js",
   "type": "module",
   "scripts": {

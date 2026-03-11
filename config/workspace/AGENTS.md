@@ -2,7 +2,7 @@
 
 ## Service Context
 
-This is an agentify container service - a FastAPI orchestrator that manages Docker sub-containers on demand. It runs at port 8800 by default.
+This is an aify container service - a FastAPI orchestrator that manages Docker sub-containers on demand. It runs at port 8800 by default.
 
 ## Endpoints
 

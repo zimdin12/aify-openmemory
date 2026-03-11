@@ -21,7 +21,7 @@ import { z } from "zod";
 const API_URL = process.env.SERVICE_API_URL || "http://localhost:8800";
 
 const server = new McpServer({
-  name: "agentify-service",
+  name: "aify-service",
   version: "0.1.0",
 });
 

@@ -1,10 +1,10 @@
-# Agentify Service - System Prompt Addition
+# Aify Service - System Prompt Addition
 
 Add this block to your Open WebUI model's system prompt.
 
 ---
 
-## Available Service: Agentify Container
+## Available Service: Aify Container
 
 You have access to a containerized service that manages on-demand sub-containers (LLMs, databases, etc.).
 

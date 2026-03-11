@@ -19,7 +19,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME:-agentify}-sub-service
+    container_name: ${COMPOSE_PROJECT_NAME:-aify}-sub-service
     restart: ${RESTART_POLICY:-unless-stopped}
     ports:
       - "${SUB_SERVICE_PORT:-9000}:9000"
@@ -37,10 +37,10 @@ services:
 
 volumes:
   sub-service-data:
-    name: ${COMPOSE_PROJECT_NAME:-agentify}-sub-service-data
+    name: ${COMPOSE_PROJECT_NAME:-aify}-sub-service-data
 
 networks:
   service-network:
     # Reference the parent network (created by main docker-compose.yml)
     external: true
-    name: ${COMPOSE_PROJECT_NAME:-agentify}-network
+    name: ${COMPOSE_PROJECT_NAME:-aify}-network

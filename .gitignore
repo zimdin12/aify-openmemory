@@ -17,8 +17,8 @@ venv/
 
 # Node
 node_modules/
-mcp/stdio/node_modules/
-mcp/stdio/package-lock.json
+mcp_local/stdio/node_modules/
+mcp_local/stdio/package-lock.json
 
 # IDE
 .vscode/

@@ -5,7 +5,7 @@ services:
   service:
     volumes:
       - ./service:/app/service
-      - ./mcp:/app/mcp
+      - ./mcp_local:/app/mcp_local
       - ./config:/app/config:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command: ["python", "-m", "uvicorn", "service.main:app", "--host", "0.0.0.0", "--port", "8800", "--reload"]

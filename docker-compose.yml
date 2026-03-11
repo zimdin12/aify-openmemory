@@ -1,8 +1,8 @@
 # =============================================================================
-# openmemory-agentified — Hybrid Memory Orchestrator
+# aify-openmemory — Hybrid Memory Orchestrator
 # =============================================================================
 # Manages sub-containers: qdrant, neo4j, openmemory-api, openmemory-ui
-# Depends on llamacpp-router for LLM + embedding (shared agentify-network)
+# Depends on llamacpp-router for LLM + embedding (shared aify-network)
 
 services:
   service:
@@ -33,7 +33,7 @@ services:
           cpus: "${CPU_LIMIT:-2}"
           memory: ${MEMORY_LIMIT:-2g}
     networks:
-      - agentify-network
+      - aify-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_PORT:-8800}/health"]
       interval: 30s
@@ -46,6 +46,6 @@ volumes:
     name: ${DATA_VOLUME_NAME:-openmemory-data}
 
 networks:
-  agentify-network:
-    name: agentify-network
+  aify-network:
+    name: aify-network
     external: true

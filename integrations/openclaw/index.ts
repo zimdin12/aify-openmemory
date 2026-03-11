@@ -1,5 +1,5 @@
 /**
- * OpenClaw Plugin - Agentify Service Integration
+ * OpenClaw Plugin - Aify Service Integration
  *
  * Provides tools and lifecycle hooks for OpenClaw agents to interact
  * with the containerized service.
@@ -74,7 +74,7 @@ export default {
    * Called when the plugin is unloaded.
    */
   async stop(ctx: PluginContext) {
-    ctx.logger.info("Agentify service plugin stopped");
+    ctx.logger.info("Aify service plugin stopped");
   },
 
   /**
@@ -85,7 +85,7 @@ export default {
      * Get service information and available capabilities.
      */
     service_info: {
-      description: "Get information about the agentify service",
+      description: "Get information about the aify service",
       parameters: {},
       async handler(ctx: PluginContext) {
         return await apiCall(ctx.config, "GET", "/info");
@@ -96,7 +96,7 @@ export default {
      * Check service health.
      */
     service_health: {
-      description: "Check agentify service health",
+      description: "Check aify service health",
       parameters: {},
       async handler(ctx: PluginContext) {
         return await apiCall(ctx.config, "GET", "/health");

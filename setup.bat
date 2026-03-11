@@ -1,9 +1,9 @@
 @echo off
 REM =============================================================================
-REM Agentify Container - Initial Setup (Windows)
+REM Aify Container - Initial Setup (Windows)
 REM =============================================================================
 
-echo Agentify Container Setup
+echo Aify Container Setup
 echo ========================
 
 if not exist .env (

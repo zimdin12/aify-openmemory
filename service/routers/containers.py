@@ -6,6 +6,8 @@ Container management and routing endpoints.
 /api/v1/gpu          - GPU allocation status
 """
 
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Request, HTTPException
 
 from service.containers.models import ContainerStatus
@@ -160,8 +162,7 @@ async def route_request(name: str, path: str, request: Request):
         raise HTTPException(503, f"Container '{actual_name}' is {actual_state.status.value}")
 
     # Update idle tracker
-    from datetime import datetime
-    actual_state.last_request_at = datetime.utcnow()
+    actual_state.last_request_at = datetime.now(timezone.utc)
 
     # Proxy the request
     target_url = f"{actual_state.internal_url}/{path}"

@@ -41,8 +41,7 @@ class ContainerManager:
 
         config = get_config()
         self.project_name = config.custom.get(
-            "compose_project_name",
-            config.custom.get("compose_project_name", "agentify"),
+            "compose_project_name", "aify"
         )
         self.network_name = config.custom.get(
             "network_name", f"{self.project_name}-network"
@@ -70,10 +69,10 @@ class ContainerManager:
             return
         try:
             containers = self.docker.containers.list(
-                filters={"label": "agentify.managed=true"}, all=True,
+                filters={"label": "aify.managed=true"}, all=True,
             )
             for container in containers:
-                name = container.labels.get("agentify.name", "")
+                name = container.labels.get("aify.name", "")
                 if name in self.states:
                     state = self.states[name]
                     if container.status == "running":
@@ -178,9 +177,14 @@ class ContainerManager:
                     )
 
                 labels = {
-                    "agentify.managed": "true",
-                    "agentify.name": name,
-                    "agentify.group": defn.group,
+                    "aify.managed": "true",
+                    "aify.name": name,
+                    "aify.group": defn.group,
+                    # Docker Desktop compose grouping
+                    "com.docker.compose.project": self.project_name,
+                    "com.docker.compose.service": name,
+                    "com.docker.compose.container-number": "1",
+                    "com.docker.compose.oneoff": "False",
                     **defn.labels,
                 }
 

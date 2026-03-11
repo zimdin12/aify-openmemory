@@ -1,5 +1,5 @@
 """
-Agentify Container - Main FastAPI Application
+Aify Container - Main FastAPI Application
 
 This is the entry point. An AI agent building on this template should:
 1. Add domain-specific routes in service/routers/api.py

@@ -97,7 +97,7 @@ class ServiceConfig:
                     setattr(config, target, val)
 
         # Ensure compose_project_name in custom matches env var
-        compose_name = os.getenv("COMPOSE_PROJECT_NAME", config.custom.get("compose_project_name", "agentify"))
+        compose_name = os.getenv("COMPOSE_PROJECT_NAME", config.custom.get("compose_project_name", "aify"))
         config.custom["compose_project_name"] = compose_name
         if "network_name" not in config.custom:
             config.custom["network_name"] = f"{compose_name}-network"

@@ -30,7 +30,7 @@
   },
 
   "custom": {
-    "compose_project_name": "agentify",
-    "network_name": "agentify-network"
+    "compose_project_name": "aify",
+    "network_name": "aify-network"
   }
 }

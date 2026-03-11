@@ -1,5 +1,5 @@
 """
-Open WebUI Tool - Agentify Service Integration
+Open WebUI Tool - Aify Service Integration
 
 Install as a Tool/Function in Open WebUI:
 1. Go to Workspace -> Functions -> Add Function
@@ -14,12 +14,12 @@ from pydantic import BaseModel, Field
 
 
 class Tools:
-    """Agentify Service tools for Open WebUI."""
+    """Aify Service tools for Open WebUI."""
 
     class Valves(BaseModel):
         SERVICE_URL: str = Field(
             default="http://localhost:8800",
-            description="Base URL of the agentify service",
+            description="Base URL of the aify service",
         )
 
     def __init__(self):

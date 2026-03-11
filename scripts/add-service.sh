@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Add a sub-service to this agentify container project
+# Add a sub-service to this aify container project
 # =============================================================================
 # Usage: ./scripts/add-service.sh <service-name> [git-repo-url]
 #

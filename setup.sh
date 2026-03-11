@@ -1,10 +1,10 @@
 #!/bin/bash
 # =============================================================================
-# Agentify Container - Initial Setup
+# Aify Container - Initial Setup
 # =============================================================================
 set -e
 
-echo "Agentify Container Setup"
+echo "Aify Container Setup"
 echo "========================"
 
 # Copy config files if they don't exist

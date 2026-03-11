@@ -1,5 +1,5 @@
 ---
-name: agentify-service
+name: aify-service
 description: Manage containerized AI services with on-demand sub-containers
 triggers:
   - when the user asks about the service or its containers
@@ -16,7 +16,7 @@ tools:
   - container_logs
 ---
 
-# Agentify Service Skill
+# Aify Service Skill
 
 You have access to a containerized service that orchestrates on-demand sub-containers (e.g., llama.cpp instances for different models).
 
@@ -60,11 +60,11 @@ GET  http://localhost:8800/route/qdrant/collections
 
 ### MCP SSE (recommended):
 ```
-claude mcp add agentify-service --transport sse http://localhost:8800/mcp/sse
+claude mcp add aify-service --transport sse http://localhost:8800/mcp/sse
 ```
 
 ### MCP stdio:
 ```
 cd mcp/stdio && npm install
-claude mcp add agentify-service -- node /absolute/path/to/mcp/stdio/server.js
+claude mcp add aify-service -- node /absolute/path/to/mcp/stdio/server.js
 ```

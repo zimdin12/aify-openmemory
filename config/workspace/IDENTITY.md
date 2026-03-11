@@ -1,7 +1,7 @@
 # Service Identity
 
 ## Template
-Agentify Container - AI agent-friendly Docker service orchestrator
+Aify Container - AI agent-friendly Docker service orchestrator
 
 ## What This Service Does
 Runs as a FastAPI application inside Docker. Manages sub-containers (LLMs, databases, other services) on demand via the Docker SDK. Provides a unified API and MCP interface for AI agents to discover, start, stop, and use sub-containers.

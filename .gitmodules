@@ -1,3 +1,4 @@
 [submodule "mem0-fork"]
 	path = mem0-fork
 	url = https://github.com/zimdin12/mem0-ollama-hybrid.git
+	branch = memory_agent

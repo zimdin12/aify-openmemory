@@ -1,7 +1,7 @@
-# OpenMemory — Agentified Hybrid Memory System
+# OpenMemory — Aify Hybrid Memory System
 
 Orchestrator for the hybrid memory stack. Manages 4 sub-containers via Docker SDK.
-Based on the agentify-container boilerplate.
+Based on the aify-container boilerplate.
 
 ## Architecture
 
@@ -13,26 +13,26 @@ openmemory-service (FastAPI orchestrator, port 8800)
   └── ui          (Next.js dashboard, port 3000→3100)
 ```
 
-LLM and embedding are provided by **llamacpp-router** on the shared `openclaw-network`.
+LLM and embedding are provided by **llamacpp-router** on the shared `aify-network`.
 
 ## Sub-Container Images
 
 - `qdrant`: `qdrant/qdrant:v1.17.0` (pulled from Docker Hub)
 - `neo4j`: `neo4j:5.26.4` (pulled from Docker Hub)
-- `api`: `openmemory-api:latest` — build from `../OpenClaw/mem0-fork/openmemory/api/Dockerfile`
-- `ui`: `openmemory-ui:latest` — build from `../OpenClaw/mem0-fork/openmemory/ui/`
+- `api`: `openmemory-api:latest` — build from `./mem0-fork/openmemory/api/Dockerfile`
+- `ui`: `openmemory-ui:latest` — build from `./mem0-fork/openmemory/ui/`
 
 ## Build API/UI Images
 
 ```bash
-docker build -t openmemory-api:latest -f ../OpenClaw/mem0-fork/openmemory/api/Dockerfile ../OpenClaw/mem0-fork
-docker build -t openmemory-ui:latest --build-arg NEXT_PUBLIC_API_URL=http://localhost:8765 --build-arg NEXT_PUBLIC_USER_ID=steven ../OpenClaw/mem0-fork/openmemory/ui
+docker build -t openmemory-api:latest -f ./mem0-fork/openmemory/api/Dockerfile ./mem0-fork
+docker build -t openmemory-ui:latest --build-arg NEXT_PUBLIC_API_URL=http://localhost:8765 --build-arg NEXT_PUBLIC_USER_ID=steven ./mem0-fork/openmemory/ui
 ```
 
 ## Quick Start
 
 ```bash
-docker network create openclaw-network 2>/dev/null || true
+docker network create aify-network 2>/dev/null || true
 docker compose up -d --build
 ```
 
@@ -44,7 +44,7 @@ docker compose up -d --build
 
 ## External Dependencies
 
-- `llamacpp-router-service:11434` — LLM inference + embeddings (must be running on openclaw-network)
+- `llamacpp-router-service:11434` — LLM inference + embeddings (must be running on aify-network)
 
 ## Endpoints
 
@@ -65,7 +65,7 @@ Memory-specific MCP tools (search, add, delete, brain agent) are on the API sub-
 
 ## Conventions
 
-Same as agentify-container boilerplate — see parent CLAUDE.md for full details.
+Same as aify-container boilerplate — see parent CLAUDE.md for full details.
 - Named volumes for persistence
 - Docker socket for container management
 - Config precedence: env > service.json > defaults
