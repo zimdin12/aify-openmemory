@@ -20,8 +20,8 @@ services:
       - ${DATA_VOLUME_NAME:-openmemory-data}:/data
       - ./config:/app/config:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # Mount mem0-fork for building the API image
-      - ../OpenClaw/mem0-fork:/data/mem0-fork:ro
+      # Mount mem0-fork submodule for building the API image
+      - ./mem0-fork:/data/mem0-fork:ro
     env_file:
       - .env
     environment:
