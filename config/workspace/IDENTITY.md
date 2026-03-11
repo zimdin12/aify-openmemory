@@ -1,29 +1,21 @@
 # Service Identity
 
-## Template
-Aify Container - AI agent-friendly Docker service orchestrator
+## Name
+aify-openmemory - Hybrid memory system orchestrator
 
 ## What This Service Does
-Runs as a FastAPI application inside Docker. Manages sub-containers (LLMs, databases, other services) on demand via the Docker SDK. Provides a unified API and MCP interface for AI agents to discover, start, stop, and use sub-containers.
+Orchestrates the OpenMemory hybrid memory stack: Qdrant (vector), Neo4j (graph), SQLite (temporal/metadata), and the mem0-based FastAPI API. Manages 4 sub-containers via Docker SDK.
 
 ## Core Capabilities
-- REST API with OpenAPI documentation at /docs
-- MCP server (SSE + stdio) for AI agent tool access
-- On-demand Docker sub-container orchestration
-- GPU-aware scheduling with memory fraction tracking
-- Streaming reverse proxy for LLM inference (SSE/chunked)
-- Automatic idle shutdown and health monitoring
-- Container sharing to avoid duplicate resource usage
+- Hybrid search across vector, graph, and temporal stores
+- Brain agent (v2) — natural language memory operations
+- 7 v1 MCP tools for direct memory access
+- MCP SSE server for AI agent integration
+- REST API with full CRUD + graph endpoints
+- On-demand sub-container management with health monitoring
 
 ## How AI Agents Use This
-1. Call /info or list_containers to discover available containers
-2. Start containers via API or MCP tools (or just call /route/{name}/... which auto-starts)
-3. Access container APIs through the proxy at /route/{name}/{path}
-4. Containers auto-stop after idle, freeing GPU memory for others
-
-## Customization
-Built as a template. AI agents building on this should:
-- Define containers in config/service.json
-- Add domain endpoints in service/routers/api.py
-- Register MCP tools in mcp/sse_server.py
-- Update platform integrations in integrations/
+1. Connect via MCP SSE at port 8765
+2. Use `memory_agent` (v2) for natural language memory ops
+3. Or use specific v1 tools (search_memory, add_memories, etc.)
+4. Orchestrator at port 8800 manages container lifecycle

@@ -1,4 +1,4 @@
-# Agent Guide: Building Services on Aify Container
+# Agent Guide: Building Services on aify-container
 
 This guide is for AI agents tasked with building a service on this template.
 

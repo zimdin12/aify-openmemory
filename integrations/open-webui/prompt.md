@@ -1,10 +1,10 @@
-# Aify Service - System Prompt Addition
+# aify-openmemory - System Prompt Addition
 
 Add this block to your Open WebUI model's system prompt.
 
 ---
 
-## Available Service: Aify Container
+## Available Service: aify-openmemory
 
 You have access to a containerized service that manages on-demand sub-containers (LLMs, databases, etc.).
 
