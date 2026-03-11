@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+*.md
+!service/**/*.md
+node_modules
+mcp/stdio/node_modules
+data/
+logs/
+.vscode/
+.idea/
+.claude/
+__pycache__
+*.pyc
+*.egg-info
+docker-compose.override.yml

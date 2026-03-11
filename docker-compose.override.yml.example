@@ -1,0 +1,29 @@
+# =============================================================================
+# Docker Compose Overrides
+# =============================================================================
+# Copy to docker-compose.override.yml to customize.
+# This file is git-ignored. It merges automatically with docker-compose.yml.
+
+services:
+  service:
+    # Example: enable GPU
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+    # Example: mount source for development with hot-reload
+    # volumes:
+    #   - ./service:/app/service
+    # command: ["python", "-m", "uvicorn", "service.main:app", "--host", "0.0.0.0", "--port", "8800", "--reload"]
+
+    # Example: add extra environment variables
+    # environment:
+    #   - MY_CUSTOM_VAR=value
+
+    # Example: change port mapping
+    # ports:
+    #   - "9000:8800"

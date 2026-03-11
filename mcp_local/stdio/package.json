@@ -1,0 +1,14 @@
+{
+  "name": "agentify-mcp-stdio",
+  "version": "0.1.0",
+  "description": "Host-side MCP server (stdio transport) for agentify container service",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.23.0"
+  }
+}

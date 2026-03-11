@@ -1,0 +1,51 @@
+# =============================================================================
+# openmemory-agentified — Hybrid Memory Orchestrator
+# =============================================================================
+# Manages sub-containers: qdrant, neo4j, openmemory-api, openmemory-ui
+# Depends on llamacpp-router for LLM + embedding (shared agentify-network)
+
+services:
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_PORT: ${SERVICE_PORT:-8800}
+    container_name: ${COMPOSE_PROJECT_NAME:-openmemory}-service
+    restart: ${RESTART_POLICY:-unless-stopped}
+    ports:
+      - "${SERVICE_PORT:-8800}:8800"
+      # Sub-container ports (8765, 3100, 8474, 8687) are published directly via container manager
+    volumes:
+      - ${DATA_VOLUME_NAME:-openmemory-data}:/data
+      - ./config:/app/config:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Mount mem0-fork for building the API image
+      - ../OpenClaw/mem0-fork:/data/mem0-fork:ro
+    env_file:
+      - .env
+    environment:
+      - SERVICE_PORT=${SERVICE_PORT:-8800}
+      - DATA_DIR=/data
+    deploy:
+      resources:
+        limits:
+          cpus: "${CPU_LIMIT:-2}"
+          memory: ${MEMORY_LIMIT:-2g}
+    networks:
+      - agentify-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_PORT:-8800}/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 15s
+      retries: 3
+
+volumes:
+  openmemory-data:
+    name: ${DATA_VOLUME_NAME:-openmemory-data}
+
+networks:
+  agentify-network:
+    name: agentify-network
+    external: true
