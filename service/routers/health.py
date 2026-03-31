@@ -19,11 +19,49 @@ async def health():
 async def ready(request: Request):
     """Readiness check. Verifies all components are initialized."""
     checks = {}
+    all_ok = True
+
+    # Container manager
     manager = getattr(request.app.state, "container_manager", None)
     if manager is not None:
         checks["container_manager"] = "initialized"
         checks["docker"] = "connected" if manager.docker else "unavailable"
-    return {"status": "ready", "checks": checks}
+        if not manager.docker:
+            all_ok = False
+
+    # Database
+    try:
+        from service.database import SessionLocal
+        db = SessionLocal()
+        db.execute("SELECT 1" if hasattr(db, 'execute') else None)
+        db.close()
+        checks["database"] = "connected"
+    except Exception:
+        checks["database"] = "unavailable"
+        all_ok = False
+
+    # Memory client (Qdrant + Neo4j)
+    try:
+        from service.memory.client import get_memory_client
+        client = get_memory_client()
+        checks["memory_client"] = "connected" if client else "unavailable"
+        if not client:
+            all_ok = False
+    except Exception:
+        checks["memory_client"] = "unavailable"
+        all_ok = False
+
+    # LLM backend
+    try:
+        from service.memory.llm import _backend
+        if _backend:
+            checks["llm_backend"] = f"{_backend.mode}:{_backend.llm_model}"
+        else:
+            checks["llm_backend"] = "not_initialized"
+    except Exception:
+        checks["llm_backend"] = "unavailable"
+
+    return {"status": "ready" if all_ok else "degraded", "checks": checks}
 
 
 @router.get("/info")

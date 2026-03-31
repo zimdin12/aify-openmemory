@@ -1,11 +1,8 @@
 """
-Aify Container - Main FastAPI Application
+Aify OpenMemory — Main FastAPI Application
 
-This is the entry point. An AI agent building on this template should:
-1. Add domain-specific routes in service/routers/api.py
-2. Register MCP tools in mcp/sse_server.py
-3. Update config/service.example.json with service-specific settings
-4. Update integrations/ (Claude Code skill, OpenClaw plugin, Open WebUI tool)
+Combines aify-container's orchestration with OpenMemory's memory intelligence.
+The orchestrator IS the memory API. Qdrant and Neo4j are managed as sub-containers.
 """
 
 import json
@@ -34,6 +31,62 @@ def _setup_logging(config):
 logger = logging.getLogger(__name__)
 
 
+def _init_database():
+    """Initialize SQLite database, create tables and default user/app."""
+    import datetime
+    from uuid import uuid4
+    import os
+
+    from service.database import Base, SessionLocal, engine
+    from service.database.models import User, App
+
+    # Create all tables
+    Base.metadata.create_all(bind=engine)
+
+    user_id = os.getenv("USER", "default_user")
+    default_app_name = "openmemory"
+
+    db = SessionLocal()
+    try:
+        # Create default user
+        user = db.query(User).filter(User.user_id == user_id).first()
+        if not user:
+            user = User(
+                id=uuid4(),
+                user_id=user_id,
+                name="Default User",
+                created_at=datetime.datetime.now(datetime.UTC),
+            )
+            db.add(user)
+            db.commit()
+            logger.info(f"Created default user: {user_id}")
+
+        # Create default app
+        existing_app = db.query(App).filter(
+            App.name == default_app_name, App.owner_id == user.id
+        ).first()
+        if not existing_app:
+            app_obj = App(
+                id=uuid4(),
+                name=default_app_name,
+                owner_id=user.id,
+                created_at=datetime.datetime.now(datetime.UTC),
+                updated_at=datetime.datetime.now(datetime.UTC),
+            )
+            db.add(app_obj)
+            db.commit()
+            logger.info(f"Created default app: {default_app_name}")
+    finally:
+        db.close()
+
+    # Create brain_audit table
+    try:
+        from service.brain.tools import _ensure_audit_table
+        _ensure_audit_table()
+    except Exception as e:
+        logger.warning(f"Brain audit table init: {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifecycle."""
@@ -42,6 +95,8 @@ async def lifespan(app: FastAPI):
     logger.info(f"Starting {config.name} v{config.version}")
 
     # --- STARTUP ---
+
+    # 1. Container manager (Qdrant, Neo4j, optional LLM containers)
     container_manager = None
     json_path = Path(config.config_dir) / "service.json"
     if json_path.exists():
@@ -63,10 +118,33 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 logger.error(f"Container manager init failed: {e}")
 
-    # TODO: Initialize your service resources here
-    #   app.state.my_resource = await create_resource()
+    # 2. Initialize LLM backend (with container manager for URL resolution)
+    try:
+        from service.memory.llm import init_llm_backend
+        init_llm_backend(container_manager)
+        logger.info("LLM backend initialized")
+    except Exception as e:
+        logger.warning(f"LLM backend init failed: {e}")
 
-    # Mount MCP server if enabled
+    # 3. Initialize database (tables, default user/app)
+    try:
+        _init_database()
+        logger.info("Database initialized")
+    except Exception as e:
+        logger.error(f"Database init failed: {e}")
+
+    # 4. Warm up memory client (connects to Qdrant + Neo4j)
+    try:
+        from service.memory.client import get_memory_client
+        client = get_memory_client()
+        if client:
+            logger.info("Memory client initialized")
+        else:
+            logger.warning("Memory client unavailable (will retry on first use)")
+    except Exception as e:
+        logger.warning(f"Memory client warmup failed: {e}")
+
+    # 5. Mount MCP server if enabled
     if config.mcp_enabled:
         from mcp_local.sse_server import setup_mcp_server
         setup_mcp_server(app)
@@ -102,8 +180,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Import brain router
+    from service.routers import brain
+
     app.include_router(health.router)
     app.include_router(api.router, prefix="/api/v1")
+    app.include_router(brain.router)
     app.include_router(containers_router.router)
 
     return app

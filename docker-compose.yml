@@ -1,7 +1,7 @@
 # =============================================================================
 # aify-openmemory — Hybrid Memory Orchestrator
 # =============================================================================
-# Manages sub-containers: qdrant, neo4j, openmemory-api, openmemory-ui
+# Manages sub-containers: qdrant, neo4j
 # Depends on llamacpp-router for LLM + embedding (shared aify-network)
 
 services:
@@ -10,12 +10,11 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        SERVICE_PORT: ${SERVICE_PORT:-8800}
+        SERVICE_PORT: ${SERVICE_PORT:-8765}
     container_name: ${COMPOSE_PROJECT_NAME:-openmemory}-service
     restart: ${RESTART_POLICY:-unless-stopped}
     ports:
-      - "${SERVICE_PORT:-8800}:8800"
-      # Sub-container ports (8765, 3100, 8474, 8687) are published directly via container manager
+      - "${SERVICE_PORT:-8765}:8765"
     volumes:
       - ${DATA_VOLUME_NAME:-openmemory-data}:/data
       - ./config:/app/config:ro
@@ -25,7 +24,7 @@ services:
     env_file:
       - .env
     environment:
-      - SERVICE_PORT=${SERVICE_PORT:-8800}
+      - SERVICE_PORT=${SERVICE_PORT:-8765}
       - DATA_DIR=/data
     deploy:
       resources:
@@ -35,10 +34,10 @@ services:
     networks:
       - aify-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_PORT:-8800}/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVICE_PORT:-8765}/health"]
       interval: 30s
       timeout: 10s
-      start_period: 15s
+      start_period: 30s
       retries: 3
 
 volumes:

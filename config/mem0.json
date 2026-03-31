@@ -1,0 +1,36 @@
+{
+  "llm": {
+    "provider": "env:LLM_PROVIDER",
+    "config": {
+      "model": "env:LLM_MODEL",
+      "temperature": 0,
+      "max_tokens": 4000
+    }
+  },
+  "embedder": {
+    "provider": "env:EMBEDDER_PROVIDER",
+    "config": {
+      "model": "env:EMBEDDER_MODEL",
+      "openai_base_url": "env:EMBEDDER_API_URL"
+    }
+  },
+  "vector_store": {
+    "provider": "env:VECTOR_STORE_PROVIDER",
+    "config": {
+      "collection_name": "env:QDRANT_COLLECTION",
+      "host": "auto",
+      "port": "env:QDRANT_PORT",
+      "embedding_model_dims": "env:QDRANT_EMBEDDING_DIMS"
+    }
+  },
+  "graph_store": {
+    "provider": "neo4j",
+    "config": {
+      "url": "auto",
+      "username": "env:NEO4J_USERNAME",
+      "password": "env:NEO4J_PASSWORD",
+      "embedding_model_dims": "env:QDRANT_EMBEDDING_DIMS"
+    }
+  },
+  "version": "v1.1"
+}
